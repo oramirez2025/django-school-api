@@ -1,13 +1,10 @@
 from django.db import models
-from student_app.models import Student
 from .validators import validate_professor_name, validate_subject_name
 from django.core import validators as v
 
 class Subject(models.Model):
     subject_name = models.CharField(null=False, unique=True, validators=[validate_subject_name]) 
     professor = models.CharField(null=False, validators = [validate_professor_name])
-    students = models.ManyToManyField(Student, related_name="subjects") # still need to validate (0 < x < 31)
-
 
 
     def __str__(self):
@@ -24,3 +21,7 @@ class Subject(models.Model):
         if self.students.count() == 0:
             raise Exception("This subject is empty!")
         self.students.remove(student_id)
+    
+    def get_grade_average(self,obj):
+        grades = obj.objects.all()
+        return round(sum([x.grade for x in grades])/len(grades),2)

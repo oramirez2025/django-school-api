@@ -2,7 +2,7 @@ from django.db import models
 from django.core import validators as v
 from .validators import validate_locker_combination, validate_name,validate_email
 from django.core.exceptions import ValidationError
-# from subject_app.models import Subject
+from subject_app.models import Subject
 
 class Student(models.Model):
     name = models.CharField(null=False, unique=False, validators=[validate_name])
@@ -11,7 +11,7 @@ class Student(models.Model):
     locker_number = models.IntegerField(null=False,unique=True,default=110,validators=[v.MinValueValidator(1),v.MaxValueValidator(200)])
     locker_combination = models.CharField(null=False,unique=False,default="12-12-12", validators=[validate_locker_combination])
     good_student = models.BooleanField(null=False,unique=False,default=True) 
-    # subjects = models.ManyToManyField(Subject, related_name="students") # still need to validate (0 < x < 8)
+    subjects = models.ManyToManyField(Subject, related_name="students") 
     
     def __str__(self):
         return f"{self.name} - {self.student_email} - {self.locker_number}"
