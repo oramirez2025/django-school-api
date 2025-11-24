@@ -22,6 +22,3 @@ class Subject(models.Model):
             raise Exception("This subject is empty!")
         self.students.remove(student_id)
     
-    def get_grade_average(self,obj):
-        grades = obj.objects.all()
-        return round(sum([x.grade for x in grades])/len(grades),2)
